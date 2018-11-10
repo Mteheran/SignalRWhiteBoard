@@ -17,6 +17,15 @@ namespace WhiteBoard
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowCredentials();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -28,6 +37,8 @@ namespace WhiteBoard
             }
 
             app.UseFileServer();
+
+            app.UseCors("CorsPolicy");
 
             app.UseSignalR(routes =>
             {
